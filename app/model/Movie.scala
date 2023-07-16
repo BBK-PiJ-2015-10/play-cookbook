@@ -1,6 +1,7 @@
 package model
 
 import play.api.libs.json._
+import play.api.libs.functional.syntax._
 
 //import play.api.libs.json.{JsValue, Json, Writes}
 
@@ -15,5 +16,11 @@ object Movie {
       "rating" -> o.rating
     )
   }
+
+  implicit val movieReads : Reads[Movie] = (
+      (JsPath \ "title").read[String] and
+        (JsPath \ "year").read[Int] and
+        (JsPath \ "rating").read[Double]
+    )(Movie.apply _)
 
 }

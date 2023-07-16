@@ -25,4 +25,19 @@ class HelloController  @Inject()(val controllerComponents: ControllerComponents)
     val json: JsValue = Json.toJson(goodMovies)
     Ok(json)
   }
+
+  def createMovies() = Action { implicit request: Request[AnyContent] =>
+    val optJsonBody: Option[JsValue] = request.body.asJson
+    val movie : JsResult[Movie]= optJsonBody.get.validate[Movie]
+    movie match {
+      case JsSuccess(movie, path) =>
+      case JsError(errors) =>
+    }
+    val goodMovies: Seq[Movie] = MovieRepo.getMovies()
+    val json: JsValue = Json.toJson(goodMovies)
+    Ok(json)
+  }
+
+
+
 }

@@ -1,6 +1,6 @@
 package controllers
 
-import model.Movie
+import model.{Error, Movie}
 
 import javax.inject._
 import play.api._
@@ -37,8 +37,10 @@ class HelloController  @Inject()(val controllerComponents: ControllerComponents)
       }
       case JsError(errors) => {
         println(s"Someone is sending bad stuff")
-
-        BadRequest(s"${errors.headOption.get._2.head.message}")
+        val errorMsg  = errors.map(_._2).mkString(",")
+        //val jsonError = Json.toJson(Error(errors.head._2.head.messages.mkString("")))
+        val jsonError = Json.toJson(Error(errorMsg))
+        BadRequest(jsonError)
       }
     }
   }

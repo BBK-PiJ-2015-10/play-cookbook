@@ -30,12 +30,17 @@ class HelloController  @Inject()(val controllerComponents: ControllerComponents)
     val optJsonBody: Option[JsValue] = request.body.asJson
     val movie : JsResult[Movie]= optJsonBody.get.validate[Movie]
     movie match {
-      case JsSuccess(movie, path) =>
-      case JsError(errors) =>
+      case JsSuccess(movie, path) => {
+        println(s"$movie")
+        val json = Json.toJson(movie)
+        Created(json)
+      }
+      case JsError(errors) => {
+        println(s"Someone is sending bad stuff")
+
+        BadRequest(s"${errors.headOption.get._2.head.message}")
+      }
     }
-    val goodMovies: Seq[Movie] = MovieRepo.getMovies()
-    val json: JsValue = Json.toJson(goodMovies)
-    Ok(json)
   }
 
 

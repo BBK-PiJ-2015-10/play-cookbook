@@ -13,6 +13,7 @@ GET    /hello                            controllers.HelloController.sayHello()
 GET    /hi/:name                         controllers.HelloController.sayHi(name: String)
 
 GET    /movies                           controllers.HelloController.getMovies()
+POST   /movies                           controllers.HelloController.createMovies()
 
 
 # Map static resources from the /public folder to the /assets URL path
